@@ -74,7 +74,11 @@ class TestProgram(object):
                 print ("@@@@@ Support pyinspect, set self.module = None")
                 self.module = None
                 sys.argv = ['python -m unittest'] + sys.argv
-            
+                
+                curPath = os.path.abspath(r".")
+                if curPath not in sys.path:
+                    sys.path.append (curPath)
+ 
             for part in module.split('.')[1:]:
                 self.module = getattr(self.module, part)
         else:
