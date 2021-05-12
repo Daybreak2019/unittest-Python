@@ -40,6 +40,7 @@ class TextTestResult(result.TestResult):
         self.showAll = verbosity > 1
         self.dots = verbosity == 1
         self.descriptions = descriptions
+        self.castDict = {}
 
     def getDescription(self, test):
         doc_first_line = test.shortDescription()
@@ -53,8 +54,10 @@ class TextTestResult(result.TestResult):
         case_path = os.environ.get ("case_dump")
         if not case_path is None:  
             with open(case_path, "a") as File:
-                case = str(test).replace (" ", "#")    
-                File.write(case + "\n")
+                case = str(test).replace (" ", "#") 
+                if self.castDict.get (case) == None:      
+                    File.write(case + "\n")
+                    self.castDict[case] = True
             return True
         return False
         

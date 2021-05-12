@@ -68,6 +68,13 @@ class TestProgram(object):
                     buffer=None, warnings=None, *, tb_locals=False):
         if isinstance(module, str):
             self.module = __import__(module)
+            md_info = dir(self.module)
+            if "DynTrace" in md_info:
+                # to support python -m pyinspect
+                print ("@@@@@ Support pyinspect, set self.module = None")
+                self.module = None
+                sys.argv = ['python -m unittest'] + sys.argv
+            
             for part in module.split('.')[1:]:
                 self.module = getattr(self.module, part)
         else:
