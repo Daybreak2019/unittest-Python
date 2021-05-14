@@ -66,26 +66,27 @@ class TestProgram(object):
                     testRunner=None, testLoader=loader.defaultTestLoader,
                     exit=True, verbosity=1, failfast=None, catchbreak=None,
                     buffer=None, warnings=None, *, tb_locals=False):
+        isPyinspect = False
         if isinstance(module, str):
             self.module = __import__(module)
             md_info = dir(self.module)
             if "DynTrace" in md_info:
                 # to support python -m pyinspect
+                isPyinspect = True
                 print ("@@@@@ Support pyinspect, set self.module = None")
                 self.module = None
                 sys.argv = ['python -m unittest'] + sys.argv
                 
                 curPath = os.path.abspath(r".")
-                if curPath not in sys.path:
-                    sys.path.append (curPath)
+                sys.path.insert (0, curPath)
  
             for part in module.split('.')[1:]:
                 self.module = getattr(self.module, part)
         else:
             self.module = module
-        if argv is None:
+        if argv is None or isPyinspect == True:
             argv = sys.argv
-
+        
         self.exit = exit
         self.failfast = failfast
         self.catchbreak = catchbreak

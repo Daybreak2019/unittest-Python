@@ -108,7 +108,7 @@ class TestLoader(object):
         testCaseNames = self.getTestCaseNames(testCaseClass)
         if not testCaseNames and hasattr(testCaseClass, 'runTest'):
             testCaseNames = ['runTest']
-        print ("loadTestsFromTestCase -> ", testCaseClass.__name__, ": ", testCaseNames)
+        print ("loadTestsFromTestCase -> ", len(testCaseNames))
         loaded_suite = self.suiteClass(map(testCaseClass, testCaseNames))
         return loaded_suite
 
